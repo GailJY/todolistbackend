@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
-
+import { Entity, PrimaryGeneratedColumn, JoinTable, ManyToMany, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Role } from './Role'
 @Entity()
 export class User{
 
@@ -10,6 +10,16 @@ export class User{
         unique: true,
     })
     username:string;
+
+    @Column()
+    encryptedpassword:string;
+
+    @ManyToMany(() => Role, role => role.code)
+    @JoinTable({
+        joinColumns: [{name: "user_id"}],
+        inverseJoinColumns: [{name: "role_id"}]
+    })
+    roles:string[];
 
     @Column({
         default: false

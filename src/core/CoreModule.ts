@@ -6,6 +6,9 @@ import { User } from "./entity/User.entity";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmConfigService } from './service/TypeOrmConfigService';
 import database from "./config/database";
+import { Role } from "./entity/Role";
+import { APP_PIPE } from "@nestjs/core";
+import { ValidationPipe } from "./pipe/ValidationPipe";
 
 
 @Global()
@@ -14,7 +17,7 @@ import database from "./config/database";
         TypeOrmModule.forRootAsync({
             useClass: TypeOrmConfigService,
         }),
-        TypeOrmModule.forFeature([User]),
+        TypeOrmModule.forFeature([User,Role]),
         ConfigModule.forRoot({
             isGlobal: true,
             load: [database],
@@ -24,7 +27,10 @@ import database from "./config/database";
         UserController
     ],
     providers: [
-        UserService,
+        UserService,{
+            provide: APP_PIPE,
+            useClass: ValidationPipe,
+        }
     ],
     exports: [],
 })
