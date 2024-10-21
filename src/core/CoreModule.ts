@@ -3,22 +3,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserService } from "./service/UserService";
 import { UserController } from "./controller/UserController";
 import { User } from "./entity/User.entity";
+import { ConfigModule } from "@nestjs/config";
+import { TypeOrmConfigService } from './service/TypeOrmConfigService';
+import database from "./config/database";
+
 
 @Global()
 @Module({
     imports: [
-        TypeOrmModule.forRoot({
-            type: 'mysql',
-            host: 'localhost',
-            port: 3306,
-            username: 'root',
-            password: 'root123456',
-            database: 'todolist',
-            // entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-            entities: [User],
-            synchronize: true,
+        TypeOrmModule.forRootAsync({
+            useClass: TypeOrmConfigService,
         }),
-        TypeOrmModule.forFeature([User])
+        TypeOrmModule.forFeature([User]),
+        ConfigModule.forRoot({
+            isGlobal: true,
+            load: [database],
+        }),
     ],
     controllers: [
         UserController
