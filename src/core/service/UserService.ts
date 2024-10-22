@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from "@nestjs/common";
+import { HttpException, Injectable, NotFoundException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { User } from "../entity/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -12,11 +12,11 @@ export class UserService {
         private userRepository: Repository<User>,
     ) {}
 
-    async findByUsername(username: string){
-        return this.userRepository.findOneBy({
-                username,
+    async findByUsername(username: string) {
+        return await this.userRepository.findOneBy({
+          username,
         });
-    }
+      }
     async create(userCreateRequest: UserCreateRequest){
         const existedUser = await this.findByUsername(userCreateRequest.username);
 
@@ -33,6 +33,6 @@ export class UserService {
             userCreateRequest.password,
             salt
         );
-        this.userRepository.save(user);
+        return this.userRepository.save(user);
     }
 }

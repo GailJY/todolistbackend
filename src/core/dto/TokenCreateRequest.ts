@@ -1,7 +1,8 @@
-import { IsNotEmpty, MinLength } from 'class-validator';
+import { IsNotEmpty, MinLength} from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
-export class UserCreateRequest{
+export class TokenCreateRequest{
+
     @IsNotEmpty({
         message: "用户名不能为空"
     })
@@ -12,7 +13,7 @@ export class UserCreateRequest{
         message: "密码不能为空"
     })
     @MinLength(6,{
-        message: "密码不能至少6个字符"
+        message: "密码不少于6位"
     })
     @ApiProperty()
     password: string;
