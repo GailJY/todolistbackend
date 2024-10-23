@@ -7,13 +7,14 @@ import { ConfigModule } from "@nestjs/config";
 import { TypeOrmConfigService } from './service/TypeOrmConfigService';
 import database from "./config/database";
 import { Role } from "./entity/Role";
-import { APP_GUARD, APP_PIPE } from "@nestjs/core";
+import { APP_GUARD, APP_PIPE, APP_FILTER } from "@nestjs/core";
 import { ValidationPipe } from "./pipe/ValidationPipe";
 import { JwtModule } from "@nestjs/jwt";
 import { TokenController } from "./controller/TokenController";
 import { AuthService } from "./service/AuthService";
 import { SECRET_KEY } from "./constant/user";
 import { AuthGuard } from "./guard/AuthGuard";
+import { HttpExceptionFilter } from "./filter/HttpExceptionFilter";
 
 
 @Global()
@@ -46,6 +47,10 @@ import { AuthGuard } from "./guard/AuthGuard";
         {
             provide: APP_PIPE,
             useClass: ValidationPipe,
+        },
+        {
+            provide: APP_FILTER,
+            useClass: HttpExceptionFilter,
         },
         {
             provide: APP_GUARD,
