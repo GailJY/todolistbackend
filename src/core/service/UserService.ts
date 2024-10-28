@@ -1,6 +1,6 @@
 import { HttpException, Injectable, NotFoundException } from "@nestjs/common";
 import { Repository } from "typeorm";
-import { User } from "../entity/user";
+import { User } from "../entity/User";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserCreateRequest } from "../dto/UserCreateRequest";
 import * as bcrypt from 'bcrypt';
